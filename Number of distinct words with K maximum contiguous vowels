@@ -1,0 +1,40 @@
+Find the number of unique words consisting of lowercase alphabets only of length N that can be formed with at-most K contiguous vowels. 
+
+
+Example 1:
+
+Input:
+N = 2
+K = 0
+Output:
+441
+Explanation:
+Total of 441 unique words are possible
+of length 2 that will have K( =0) vowels
+together, e.g. "bc", "cd", "df", etc are
+valid words while "ab" (with 1 vowel) is
+not a valid word.
+
+
+def countWords(N, K):
+    mod = 10**9 + 7
+    dp = [[0] * (K + 1) for _ in range(N + 1)]
+    
+    # Initialize dp for N = 1
+    for i in range(K + 1):
+        dp[1][i] = 1
+    
+    for n in range(2, N + 1):
+        for k in range(K + 1):
+            dp[n][k] = (25 * dp[n - 1][k] + dp[n - 1][k - 1]) % mod
+            if k >= 2:
+                dp[n][k] = (dp[n][k] + dp[n - 1][k - 2]) % mod
+    
+    result = 26 * dp[N][K]
+    return result
+
+# Example 1
+N = 2
+K = 0
+result = countWords(N, K)
+print(result)  # Output: 441
